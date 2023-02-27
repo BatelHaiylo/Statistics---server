@@ -1,13 +1,8 @@
 const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema(
+const ImporterSchema = new mongoose.Schema(
   {
-    role: {
-      type: String,
-      enum: ["admin", "manager", "employee", "user"],
-      default: "user",
-    },
-    fullName: {
+    Name: {
       type: String,
       required: true,
     },
@@ -26,6 +21,22 @@ const UserSchema = new mongoose.Schema(
       minLength: 10,
       required: true,
     },
+    address: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    zipCode: {
+      type: String,
+      required: true,
+    },
+    importerCode: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -34,4 +45,4 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("user", UserSchema);
+module.exports = mongoose.model("importer", ImporterSchema);
