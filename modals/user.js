@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       enum: ["admin", "manager", "employee", "user"],
       default: "user",
+      required: true,
     },
     fullName: {
       type: String,
@@ -20,6 +21,7 @@ const UserSchema = new mongoose.Schema(
     age: {
       type: Date,
       required: true,
+      min: '2005-12-31',
     },
     phone: {
       type: String,
