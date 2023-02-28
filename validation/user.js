@@ -6,7 +6,7 @@ const SignUpValidate = (data) => {
     role: Joi.string().required(),
     fullName: Joi.string().required(),
     email: Joi.string().min(11).email().required(),
-    age: Joi.date().iso().max("2005-12-31").required(),
+    age: Joi.date().required(),
     phone: Joi.string().min(11).required(),
     password: passwordComplexity().required(),
   });
