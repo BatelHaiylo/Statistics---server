@@ -24,7 +24,7 @@ const getProductById = async (req, res) => {
 
 
 const addProduct = async (req, res) => {
-  await ProductModal.insertMany(req.body.product)
+  await ProductModal.insertMany(req.body)
     .then((result) => {
       return res.status(200).json({ successes: true, result });
     })
@@ -32,7 +32,7 @@ const addProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-  await ProductModal.findByIdAndUpdate(req.params.id, req.body.product)
+  await ProductModal.findByIdAndUpdate(req.params.id, req.body)
     .then((result) => {
       return res.status(200).json({ successes: true, result });
     })
@@ -40,7 +40,7 @@ const updateProduct = async (req, res) => {
 };
 
 const deleteProduct = async (req, res) => {
-  await ProductModal.findByIdAndRemove(req.params.id, req.body.product)
+  await ProductModal.findByIdAndRemove(req.params.id, req.body)
     .then((result) => {
       return res.status(200).json({ successes: true, result });
     })

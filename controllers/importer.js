@@ -12,8 +12,8 @@ const getImporters = async (req, res) => {
     });
 };
 
-const getImporterById = async (req, res) => {
-  await ImporterModal.findById(req.params.id)
+const getImporterByImporterCode = async (req, res) => {
+  await ImporterModal.find(req.paramsCode)
     .then((importer) => {
       return !importer
         ? res.status(200).json({ successes: true }, importer)
@@ -23,14 +23,14 @@ const getImporterById = async (req, res) => {
 };
 
 const addNewImporter = async (req, res) => {
-  await ImporterModal.create(req.body.Importer)
+  await ImporterModal.create(req.body)
     .then((importer) => {
       return res.status(200).json({ successes: true, importer });
     })
     .catch((error) => res.status(400).json({ successes: false, error }));
 };
 const addImporter = async (req, res) => {
-  await ImporterModal.insertMany(req.body.Importer)
+  await ImporterModal.insertMany(req.body)
     .then((importer) => {
       return res.status(200).json({ successes: true, importer });
     })
@@ -38,7 +38,7 @@ const addImporter = async (req, res) => {
 };
 
 const updateImporter = async (req, res) => {
-  await ImporterModal.findByIdAndUpdate(req.params.id, req.body.Importer)
+  await ImporterModal.findByIdAndUpdate(req.params.id, req.body)
     .then((importer) => {
       return res.status(200).json({ successes: true, importer });
     })
@@ -46,11 +46,11 @@ const updateImporter = async (req, res) => {
 };
 
 const deleteImporter = async (req, res) => {
-  await ImporterModal.findByIdAndRemove(req.params.id, req.body.Importer)
+  await ImporterModal.findByIdAndRemove(req.params.id, req.body)
     .then((importer) => {
       return res.status(200).json({ successes: true, importer });
     })
     .catch((error) => res.status(400).json({ successes: false, error }));
 };
 
-module.exports = { getImporters, getImporterById, addImporter, updateImporter, deleteImporter };
+module.exports = { getImporters, getImporterByImporterCode, addImporter, updateImporter, deleteImporter };

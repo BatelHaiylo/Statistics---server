@@ -12,6 +12,11 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(helmet());
 
+app.use("/auth", require("./routes/user"));
+app.use("/item", require("./routes/product"));
+app.use("/invoice", require("./routes/invoice"));
+app.use("/supplier", require("./routes/importer"));
+
 app.get("/", (req, res) => {
   res.send("server online "); 
 });

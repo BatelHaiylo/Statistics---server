@@ -1,10 +1,10 @@
-const UsersModal = require("../modals/user");
+const UserModal = require("../modals/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { SignUpValidate, SignInValidate} = require("../validation/user");
 
 const getUsers = async (req, res) => {
-  const users = await UserModel.find().select("-_id -password");
+  const users = await UserModal.find({}).select("-_id -password");
   if (!users) {
     return res.status(400).json({ message: "users not found" });
   }
@@ -17,8 +17,8 @@ const getUsers = async (req, res) => {
 };
 
 const signUp = async (req, res) => {
-  const {role, fullName, email, age, phone, password} = req.body; //13
-  const emailExist = await UsersModal.findOne({ email });
+  const {role, fullName, email, age, phone, password} = req.body;
+  const emailExist = await UserModal.findOne({ email });
 
   const { error } = SignUpValidate(req.body);
   if (error) {
@@ -30,7 +30,7 @@ const signUp = async (req, res) => {
 
   const salt = await bcrypt.genSalt(8);
   const hashedPassword = await bcrypt.hash(password, salt);
-  let user = new UsersModal({
+  let user = new UserModal({
     role,
     fullName,
     email,
@@ -55,11 +55,11 @@ const signUp = async (req, res) => {
 const signIn = async (req, res) => {
   const { email, password } = req.body;
 
-  const { error } = SignInValidate(req.body);
+  const { error } = SignInValidate({message: "success"}, req.body);
   if (error) {
     return res.status(400).send({ message: error.details[0].message });
   }
-  const existUser = await UsersModal.findOne({ email }).select("-_id ");
+  const existUser = await UserModal.findOne({ email }).select("-_id -password");
   if (!existUser) {
     return res.status(404).json({ message: "user not found" });
   }
@@ -70,7 +70,7 @@ const signIn = async (req, res) => {
     return res.status(400).json({ message: "password invalid" });
   }
 
-  const token = jwt.sign({ email: existUser.email }, process.env.SECRET_TOKEN);
+  const token = jwt.sign({ email: existUser.email }, process.env.SECRET_KEY);
 
   return res
     .status(200)
@@ -78,19 +78,11 @@ const signIn = async (req, res) => {
 };
 
 const getUserByEmail = async (req, res) => {
-  await UsersModal.findOne({ email }).select("-_id -password")
+  await UserModal.findOne({ email: req.params }).select("-_id -password")
     .then((user) => {
       return !user
         ? res.status(200).json({ successes: true }, user)
-        : res.status(300).json({ successes: false, msg: "no user found" });
-    })
-    .catch((error) => res.status(400).json({ successes: false, error }));
-};
-
-const addNewUser = async (req, res) => {
-  await UsersModal.insertMany(req.body)
-    .then((user) => {
-      return res.status(200).json({ successes: true, user });
+        : res.status(300).json({ successes: false, msg: "no registered user found" });
     })
     .catch((error) => res.status(400).json({ successes: false, error }));
 };
@@ -99,7 +91,7 @@ const updateUser = async (req, res) => {
   const {role, fullName, email, age, phone, password} = req.body;
   let user;
 
-  const userExist =await UserModel.findOne({ email:req.params.email })
+  const userExist =await UserModal.findOne({ email:req.params.email })
   if (!userExist) {
     return res.status(201).json({ message: "user not exist" });
   }
@@ -110,7 +102,7 @@ const updateUser = async (req, res) => {
     if(error){
       return res.status(400).send({message:error.details[0].message})
     }
-    user = await UserModel.findOneAndUpdate(
+    user = await UserModal.findOneAndUpdate(
       { email: req.params.email },
       {
         role,
@@ -136,7 +128,7 @@ const deleteUser= async (req, res) => {
   let user;
 
   try {
-    user=await UsersModel.findOneAndRemove({email})
+    user=await UserModal.findOneAndRemove({email})
 
   } catch (err) {
     return console.log(err);
@@ -148,4 +140,4 @@ const deleteUser= async (req, res) => {
   return res.status(200).json({ message: "Deleted Successfully" });
 };
 
-module.exports = { getUsers, signUp, signIn, getUserByEmail, addNewUser, updateUser, deleteUser };
+module.exports = { getUsers, signUp, signIn, getUserByEmail, updateUser, deleteUser };

@@ -27,15 +27,33 @@ const ProductSchema = new mongoose.Schema(
       required: true,
     },
     sale: {
-      saleName: { type: String },
-      startDate: { type: Date },
-      endDate: { type: Date },
-      discountPercentage: { type: Number },
-      salePrice: { type: Number },
-      isOnline: { type: Boolean },
+      saleName: {
+        type: String,
+        default: "",
+      },
+      startDate: {
+        type: Date,
+        default: Date.now,
+      },
+      endDate: {
+        type: Date,
+        default: Date.now,
+      },
+      discountPercentage: {
+        type: Number,
+        default: 0,
+      },
+      salePrice: {
+        type: Number,
+        default: 0,
+      },
+      isOnline: {
+        type: Boolean,
+        default: false,
+      },
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('product', ProductSchema);
+module.exports = mongoose.model("product", ProductSchema);

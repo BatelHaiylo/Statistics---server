@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const ImporterSchema = new mongoose.Schema(
   {
-    Name: {
+    companyName: {
       type: String,
       required: true,
     },
@@ -11,10 +11,6 @@ const ImporterSchema = new mongoose.Schema(
       minLength: 11,
       required: true,
       unique: true,
-    },
-    age: {
-      type: Date,
-      required: true,
     },
     phone: {
       type: String,
@@ -34,10 +30,6 @@ const ImporterSchema = new mongoose.Schema(
       required: true,
     },
     importerCode: {
-      type: String,
-      required: true,
-    },
-    password: {
       type: String,
       required: true,
     },
