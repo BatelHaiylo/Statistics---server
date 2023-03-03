@@ -6,19 +6,29 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    img: {
-      type: String,
-    },
+    colors:[ {
+      color: {
+        type: String,
+        required: true,
+      },
+      img: {
+        type: String,
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      }],
     department: {
       type: String,
       required: true,
     },
-
-    price: {
-      type: Number,
+    desc: {
+      type: String,
       required: true,
     },
-    quantity: {
+    price: {
       type: Number,
       required: true,
     },
