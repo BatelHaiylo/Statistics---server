@@ -5,7 +5,7 @@ const { SignUpValidate, SignInValidate } = require("../validation/user");
 
 const getUsers = async (req, res) => {
   try {
-    const users = await UserModal.find({}, "-_id -password");
+    const users = await UserModal.find({}, "-password");
     if (users.length === 0) {
       return res.status(404).json({ message: "No users found" });
     }
@@ -81,11 +81,11 @@ const signIn = async (req, res) => {
 };
 
 const getUserByEmail = async (req, res) => {
-  await UserModal.findOne({ email: req.params })
+  await UserModal.findOne({ email: req.params.email})
     .select("-_id -password")
     .then((user) => {
-      return !user
-        ? res.status(200).json({ successes: true }, user)
+      return user
+        ? res.status(200).json({ successes: true, user })
         : res
             .status(300)
             .json({ successes: false, msg: "no registered user found" });
